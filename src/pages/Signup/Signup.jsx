@@ -47,7 +47,7 @@ export const Signup = () => {
 
       // Delay navigation by 2 seconds to show success message
       setTimeout(() => {
-        navigate("/login");
+        navigate("/loginSection");
       }, 2000); // 2000 ms = 2 seconds
     } catch (error) {
       console.log(error);
