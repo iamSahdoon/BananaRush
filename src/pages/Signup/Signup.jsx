@@ -14,7 +14,8 @@ export const Signup = () => {
     password: { required: false },
   };
   const [errors, setErrors] = useState(initialState);
-  const [accountCreated, setAccountCreated] = useState(false);
+  const [accountCreated, setAccountCreated] = useState(false); // for account created in firebase
+  const [registerError, setRegisterError] = useState(""); // For Firebase error message
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +33,8 @@ export const Signup = () => {
     }
     // Clear errors if both fields are filled
     setErrors(initialState);
+    setRegisterError(""); // Clear any previous error messages
+    setAccountCreated(false); // Reset success message
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -40,6 +43,7 @@ export const Signup = () => {
     } catch (error) {
       console.log(error);
       setAccountCreated(false); // Clear success message on error
+      setRegisterError("User already exists"); // Set the error message
     }
   };
 
@@ -84,6 +88,7 @@ export const Signup = () => {
                 <span>:( Password required</span>
               ) : null}
               {accountCreated && <span>:) Player registered successfully</span>}
+              {registerError && <span>:( {registerError}</span>}
             </div>
             <div className="img-container">
               <Link to="/loginSection">
