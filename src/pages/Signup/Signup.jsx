@@ -5,6 +5,7 @@ import tologin from "../images/tologin.svg";
 import register from "../images/register.svg";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { auth } from "../../firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -14,23 +15,26 @@ export const Signup = () => {
     password: { required: false },
   };
   const [errors, setErrors] = useState(initialState);
-  const [accountCreated, setAccountCreated] = useState(false); // for account created in firebase
+  const [accountCreated, setAccountCreated] = useState(false); // for account creation in Firebase
   const [registerError, setRegisterError] = useState(""); // For Firebase error message
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const handleRegister = async (e) => {
-    e.preventDefault(); // prevents page from reloading when we click register
+    e.preventDefault(); // Prevent page from reloading
 
     // Validation check
     if (!email || !password) {
       setErrors({
-        email: { required: !email }, // sets email required error if email is empty
-        password: { required: !password }, // sets password required error if password is empty
+        email: { required: !email }, // Set email required error if email is empty
+        password: { required: !password }, // Set password required error if password is empty
       });
-      return; // stops the function if either field is empty
+      return; // Stop function if either field is empty
     }
+
     // Clear errors if both fields are filled
     setErrors(initialState);
     setRegisterError(""); // Clear any previous error messages
@@ -40,6 +44,7 @@ export const Signup = () => {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log("Account created");
       setAccountCreated(true); // Set account created to true on success
+      navigate("/login"); // Redirect to /login after successful signup
     } catch (error) {
       console.log(error);
       setAccountCreated(false); // Clear success message on error
@@ -105,8 +110,6 @@ export const Signup = () => {
           <p>V1.0</p>
           <p>made by : Sabique</p>
         </div>
-
-        {/* <p>Copyright © 2022 BANANA RUSH. All rights reserved.</p> */}
       </div>
     </>
   );
