@@ -44,7 +44,11 @@ export const Signup = () => {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log("Account created");
       setAccountCreated(true); // Set account created to true on success
-      navigate("/login"); // Redirect to /login after successful signup
+
+      // Delay navigation by 2 seconds to show success message
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000); // 2000 ms = 2 seconds
     } catch (error) {
       console.log(error);
       setAccountCreated(false); // Clear success message on error
