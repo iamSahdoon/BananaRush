@@ -44,7 +44,11 @@ export const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Login successful");
       setLoginSuccess(true); // Set success message
-      navigate("/difficulty"); // Redirect to /difficulty
+
+      // Delay navigation by 2 seconds to show success message
+      setTimeout(() => {
+        navigate("/difficulty");
+      }, 2000); // 2000 ms = 2 seconds
     } catch (error) {
       console.log(error);
       setLoginSuccess(false); // Reset success message
@@ -86,7 +90,9 @@ export const Login = () => {
             <div className="error-span">
               {errors.email.required && <span>:( Email is required</span>}
               {errors.password.required && <span>:( Password is required</span>}
-              {loginSuccess && <span>:) Login successful!</span>}
+              {loginSuccess && (
+                <span>:) Login successful! Enjoy the Game :)</span>
+              )}
               {loginError && <span>:( {loginError}</span>}
             </div>
             <div className="img-container">
