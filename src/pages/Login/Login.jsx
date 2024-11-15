@@ -5,6 +5,7 @@ import tosignup from "../images/tosignup.svg";
 import play from "../images/play.svg";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { auth } from "../../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -19,6 +20,8 @@ export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent page reload
@@ -41,6 +44,7 @@ export const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Login successful");
       setLoginSuccess(true); // Set success message
+      navigate("/difficulty"); // Redirect to /difficulty
     } catch (error) {
       console.log(error);
       setLoginSuccess(false); // Reset success message
