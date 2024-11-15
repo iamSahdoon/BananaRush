@@ -36,9 +36,9 @@ export const Login = () => {
               <Link to="/signup">
                 <img className="tosignup" src={tosignup} alt="siginup" />
               </Link>
-              <button type="submit" onClick={tosignup}>
+              <Link to="/difficulty">
                 <img className="play" src={play} alt="play" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
