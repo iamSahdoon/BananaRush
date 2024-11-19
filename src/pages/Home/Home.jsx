@@ -2,15 +2,48 @@ import "./Home.css";
 import InfoIcon from "../images/info.svg";
 import bananapixelart from "../images/banana-pixel-art.svg";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { auth, database } from "../../firebase/config"; // Import Firebase services
+import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 
 export const Home = () => {
+  const [username, setUsername] = useState("Fetching..."); // State to hold the username
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        // Check if a user is logged in
+        if (auth.currentUser) {
+          const userUid = auth.currentUser.uid; // Get current user's UID
+          const userDocRef = doc(database, "users", userUid); // Reference to the user's Firestore document
+          const userDoc = await getDoc(userDocRef); // Fetch the document
+
+          if (userDoc.exists()) {
+            setUsername(userDoc.data().username); // Set the username from Firestore data
+          } else {
+            console.log("User document does not exist");
+            setUsername("Unknown User");
+          }
+        } else {
+          setUsername("Guest"); // Handle the case where no user is logged in
+        }
+      } catch (error) {
+        console.error("Error fetching username:", error);
+        setUsername("Error fetching username");
+      }
+    };
+
+    fetchUsername(); // Call the function on component mount
+  }, []); // Empty dependency array to run once
+
   return (
     <>
       <div className="container">
         <div className="header-icon">
           <img src={InfoIcon} alt="Banana Login Signup" />
           <div className="old-user-container">
-            <h1 className="user-name">username</h1>
+            <h1 className="user-name">{username}</h1>{" "}
+            {/* Display the username */}
             <button className="logout">Logout</button>
           </div>
         </div>
