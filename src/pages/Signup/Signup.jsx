@@ -5,9 +5,10 @@ import tologin from "../images/tologin.svg";
 import register from "../images/register.svg";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { auth } from "../../firebase/config";
+import { useNavigate } from "react-router-dom";
+import { auth, database } from "../../firebase/config"; // Import Firestore
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; // Import Firestore methods
 
 export const Signup = () => {
   const initialState = {
@@ -16,46 +17,63 @@ export const Signup = () => {
     password: { required: false },
   };
   const [errors, setErrors] = useState(initialState);
-  const [accountCreated, setAccountCreated] = useState(false); // for account creation in Firebase
-  const [registerError, setRegisterError] = useState(""); // For Firebase error message
+  const [accountCreated, setAccountCreated] = useState(false);
+  const [registerError, setRegisterError] = useState("");
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
-    e.preventDefault(); // Prevent page from reloading
+    e.preventDefault();
 
     // Validation check
-    if (!email || !password) {
+    if (!username || !email || !password) {
       setErrors({
-        username: { required: !username }, // Clear username error on registration
-        email: { required: !email }, // Set email required error if email is empty
-        password: { required: !password }, // Set password required error if password is empty
+        username: { required: !username },
+        email: { required: !email },
+        password: { required: !password },
       });
-      return; // Stop function if either field is empty
+      return;
     }
 
-    // Clear errors if both fields are filled
+    // Clear errors if valid
     setErrors(initialState);
-    setRegisterError(""); // Clear any previous error messages
-    setAccountCreated(false); // Reset success message
+    setRegisterError("");
+    setAccountCreated(false);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log("Account created");
-      setAccountCreated(true); // Set account created to true on success
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-      // Delay navigation by 2 seconds to show success message
+      // Add user data to Firestore
+      await setDoc(doc(database, "users", user.uid), {
+        username: username,
+        email: email,
+        password: password,
+        rank: null,
+        points: null,
+        lastMatchDate: null,
+      });
+
+      console.log("Account created and data saved in Firestore");
+      setAccountCreated(true);
+
+      // Delay navigation by 2 seconds
       setTimeout(() => {
         navigate("/loginSection");
-      }, 2000); // 2000 ms = 2 seconds
+      }, 2000);
     } catch (error) {
       console.log(error);
-      setAccountCreated(false); // Clear success message on error
-      setRegisterError("User already exists"); // Set the error message
+      setAccountCreated(false);
+      setRegisterError("User already exists or an error occurred");
     }
   };
 
@@ -96,21 +114,17 @@ export const Signup = () => {
               <input
                 className="password"
                 type="password"
-                name="name"
-                id="email"
+                name="password"
+                id="password"
                 placeholder="Password..."
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </form>
             <div className="error-span">
-              {errors.username.required ? (
-                <span>:( Username required</span>
-              ) : null}
-              {errors.email.required ? <span>:( Email required</span> : null}
-              {errors.password.required ? (
-                <span>:( Password required</span>
-              ) : null}
+              {errors.username.required && <span>:( Username required</span>}
+              {errors.email.required && <span>:( Email required</span>}
+              {errors.password.required && <span>:( Password required</span>}
               {accountCreated && <span>:) Player registered successfully</span>}
               {registerError && <span>:( {registerError}</span>}
             </div>
