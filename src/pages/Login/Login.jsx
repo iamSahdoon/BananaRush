@@ -7,7 +7,11 @@ import play from "../images/play.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { auth } from "../../firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 export const Login = () => {
   const initialState = {
@@ -41,6 +45,10 @@ export const Login = () => {
     setLoginSuccess(false);
 
     try {
+      // Set session persistence
+      await setPersistence(auth, browserLocalPersistence);
+
+      // Sign in with email and password
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Login successful");
       setLoginSuccess(true); // Set success message
@@ -74,7 +82,7 @@ export const Login = () => {
             <form>
               <input
                 className="username"
-                type="email" // Changed to email input
+                type="email"
                 placeholder="Email..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} // Update email state
@@ -97,7 +105,7 @@ export const Login = () => {
             </div>
             <div className="img-container">
               <Link to="/signup">
-                <img className="tosignup" src={tosignup} alt="siginup" />
+                <img className="tosignup" src={tosignup} alt="signup" />
               </Link>
               <button type="submit" onClick={handleLogin}>
                 <img className="play" src={play} alt="play" />
