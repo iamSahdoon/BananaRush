@@ -7,7 +7,7 @@ import register from "../images/register.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, database } from "../../firebase/config"; // Import Firestore
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; // Import Firestore methods
 
 export const Signup = () => {
@@ -64,6 +64,11 @@ export const Signup = () => {
       });
 
       console.log("Account created and data saved in Firestore");
+
+      // Immediately sign out the user after signup because it will save it in local storage if not.
+      await signOut(auth);
+      console.log("User signed out after signup");
+
       setAccountCreated(true);
 
       // Delay navigation by 2 seconds
