@@ -16,10 +16,25 @@
   border: 2px solid rgba(255, 255, 255, 0);
 }
 .header-icon {
-  height: fit-content;
-  width: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 40px;
   margin-left: 50px;
+  margin-right: 50px;
+}
+
+.user-name {
+  border-bottom: 2px solid #a78233;
+  color: #a78233;
+  letter-spacing: 2px;
+}
+.logout {
+  text-decoration: none;
+  border: 0;
+  background-color: transparent;
+  font-size: 30px;
+  color: #a78233;
 }
 
 .hero-section {

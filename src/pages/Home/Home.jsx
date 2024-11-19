@@ -9,6 +9,10 @@ export const Home = () => {
       <div className="container">
         <div className="header-icon">
           <img src={InfoIcon} alt="Banana Login Signup" />
+          <div className="old-user-container">
+            <h1 className="user-name">username</h1>
+            <button className="logout">Logout</button>
+          </div>
         </div>
 
         <div className="hero-section">
