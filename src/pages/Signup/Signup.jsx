@@ -11,6 +11,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export const Signup = () => {
   const initialState = {
+    username: { required: false },
     email: { required: false },
     password: { required: false },
   };
@@ -18,6 +19,7 @@ export const Signup = () => {
   const [accountCreated, setAccountCreated] = useState(false); // for account creation in Firebase
   const [registerError, setRegisterError] = useState(""); // For Firebase error message
 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,6 +31,7 @@ export const Signup = () => {
     // Validation check
     if (!email || !password) {
       setErrors({
+        username: { required: !username }, // Clear username error on registration
         email: { required: !email }, // Set email required error if email is empty
         password: { required: !password }, // Set password required error if password is empty
       });
@@ -70,8 +73,17 @@ export const Signup = () => {
         </div>
 
         <div className="box-container">
-          <div className="box">
+          <div className="box-signup">
             <form>
+              <input
+                className="username"
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username..."
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
               <input
                 className="email"
                 type="email"
@@ -92,6 +104,9 @@ export const Signup = () => {
               />
             </form>
             <div className="error-span">
+              {errors.username.required ? (
+                <span>:( Username required</span>
+              ) : null}
               {errors.email.required ? <span>:( Email required</span> : null}
               {errors.password.required ? (
                 <span>:( Password required</span>

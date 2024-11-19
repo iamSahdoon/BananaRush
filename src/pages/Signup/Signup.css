@@ -47,14 +47,14 @@
   align-items: center;
 }
 
-.box {
+.box-signup {
   width: 1250px;
-  height: 400px;
+  height: 480px;
   border: 4px solid #e1ae3e;
   border-radius: 5px;
 }
 
-.box form {
+.box-signup form {
   display: flex;
   flex-direction: column;
   justify-content: center;
