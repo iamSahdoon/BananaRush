@@ -14,17 +14,18 @@ export const Game = () => {
   const [loading, setLoading] = useState(true); // Track API loading state
   const [userAnswer, setUserAnswer] = useState(""); // Holds the user's input
   const [feedback, setFeedback] = useState(""); // Holds feedback (Correct/Wrong)
+  const [isPaused, setIsPaused] = useState(false); // To control timer pause
 
   // Timer countdown
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (timeLeft <= 0 || isPaused) return;
 
     const countdown = setInterval(() => {
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
 
     return () => clearInterval(countdown);
-  }, [timeLeft]);
+  }, [timeLeft, isPaused]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -44,6 +45,7 @@ export const Game = () => {
       setSolution(data.solution);
       setTimeLeft(timer); // Reset the timer for the next question
       setFeedback(""); // Reset feedback to initial state
+      setIsPaused(false); // Unpause the timer
     } catch (error) {
       console.error("Failed to fetch API:", error);
     } finally {
@@ -64,16 +66,16 @@ export const Game = () => {
 
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
+      setIsPaused(true); // Pause the timer
     } else {
       setFeedback("Wrong! 😞");
     }
 
     setUserAnswer(""); // Clear the input field after submission
+  };
 
-    // Delay before moving to the next quiz
-    setTimeout(() => {
-      fetchQuestion(); // Fetch the next quiz question
-    }, 2000); // 2-second delay
+  const handleNextQuiz = () => {
+    fetchQuestion(); // Fetch the next quiz question
   };
 
   return (
@@ -116,7 +118,9 @@ export const Game = () => {
                 <button className="user-input-submit" onClick={handleSubmit}>
                   SUBMIT
                 </button>
-                <button className="user-input-next">Next Quiz</button>
+                <button className="user-input-next" onClick={handleNextQuiz}>
+                  Next Quiz
+                </button>
               </div>
               <span>
                 <p>Total points: </p>
