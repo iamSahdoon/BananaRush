@@ -51,12 +51,11 @@
   color: #ca9c38;
 }
 
-.header-game h3 {
+.header-game p {
   font-family: ThaleahFat, "VT323", monospace;
   font-size: 30px;
   color: #ca9c38;
   margin-top: 25px;
-  letter-spacing: 2px;
 }
 
 .bananaAPI {
