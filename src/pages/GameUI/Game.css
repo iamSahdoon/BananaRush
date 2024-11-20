@@ -160,10 +160,29 @@
   font-size: 30px;
   color: #a57a1e;
   margin-left: 10px;
-  transition: 0.3s ease;
+  transition: 0.2s ease;
 }
 .user-input-submit:hover {
   filter: brightness(1.2);
+  scale: 1.03;
+}
+
+.user-input-next {
+  border: 4px solid #a57a1e;
+  border-radius: 5px;
+  text-decoration: none;
+  background-color: #a57a1e12;
+  height: 40px;
+  width: 140px;
+  font-family: ThaleahFat, "VT323", monospace;
+  font-size: 30px;
+  color: #a57a1e;
+  margin-left: 10px;
+  transition: 0.2s ease;
+}
+.user-input-next:hover {
+  filter: brightness(1.2);
+  scale: 1.03;
 }
 
 .left-content p {

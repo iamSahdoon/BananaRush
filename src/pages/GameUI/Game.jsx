@@ -116,6 +116,7 @@ export const Game = () => {
                 <button className="user-input-submit" onClick={handleSubmit}>
                   SUBMIT
                 </button>
+                <button className="user-input-next">Next Quiz</button>
               </div>
               <span>
                 <p>Total points: </p>
