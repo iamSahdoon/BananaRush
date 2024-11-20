@@ -15,6 +15,7 @@ export const Game = () => {
   const [userAnswer, setUserAnswer] = useState(""); // Holds the user's input
   const [feedback, setFeedback] = useState(""); // Holds feedback (Correct/Wrong)
   const [isPaused, setIsPaused] = useState(false); // To control timer pause
+  const [canProceed, setCanProceed] = useState(false); // Controls Next Quiz button state
 
   // Timer countdown
   useEffect(() => {
@@ -46,6 +47,7 @@ export const Game = () => {
       setTimeLeft(timer); // Reset the timer for the next question
       setFeedback(""); // Reset feedback to initial state
       setIsPaused(false); // Unpause the timer
+      setCanProceed(false); // Disable the Next Quiz button
     } catch (error) {
       console.error("Failed to fetch API:", error);
     } finally {
@@ -67,6 +69,7 @@ export const Game = () => {
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
       setIsPaused(true); // Pause the timer
+      setCanProceed(true); // Enable the Next Quiz button
     } else {
       setFeedback("Wrong! 😞");
     }
@@ -75,7 +78,13 @@ export const Game = () => {
   };
 
   const handleNextQuiz = () => {
-    fetchQuestion(); // Fetch the next quiz question
+    if (!canProceed) {
+      setFeedback("Answer this quiz first to unlock the next quiz.");
+      return; // Prevent fetching the next quiz
+    }
+    // Reset feedback and fetch next quiz
+    setFeedback("");
+    fetchQuestion();
   };
 
   return (
