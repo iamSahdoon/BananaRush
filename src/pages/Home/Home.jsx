@@ -12,21 +12,24 @@ export const Home = () => {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        // Check if a user is logged in
-        if (auth.currentUser) {
-          const userUid = auth.currentUser.uid; // Get current user's UID
-          const userDocRef = doc(database, "users", userUid); // Reference to the user's Firestore document
-          const userDoc = await getDoc(userDocRef); // Fetch the document
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            const userUid = user.uid; // Get current user's UID
+            const userDocRef = doc(database, "users", userUid); // Reference Firestore document
+            const userDoc = await getDoc(userDocRef); // Fetch the document
 
-          if (userDoc.exists()) {
-            setUsername(userDoc.data().username); // Set the username from Firestore data
+            if (userDoc.exists()) {
+              setUsername(userDoc.data().username); // Set the username from Firestore data
+            } else {
+              console.log("User document does not exist");
+              setUsername("Unknown User");
+            }
           } else {
-            console.log("User document does not exist");
-            setUsername("Unknown User");
+            setUsername("Guest"); // Handle case where no user is logged in
           }
-        } else {
-          setUsername("Guest"); // Handle the case where no user is logged in
-        }
+        });
+
+        return () => unsubscribe(); // Clean up the listener when the component unmounts
       } catch (error) {
         console.error("Error fetching username:", error);
         setUsername("Error fetching username");
@@ -34,7 +37,7 @@ export const Home = () => {
     };
 
     fetchUsername(); // Call the function on component mount
-  }, []); // Empty dependency array to run once
+  }, []);
 
   return (
     <>

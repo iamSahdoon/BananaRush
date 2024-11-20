@@ -24,27 +24,31 @@ export const Game = () => {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        if (auth.currentUser) {
-          const userUid = auth.currentUser.uid;
-          const userDocRef = doc(database, "users", userUid);
-          const userDoc = await getDoc(userDocRef);
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            const userUid = user.uid; // Get the UID from the logged-in user
+            const userDocRef = doc(database, "users", userUid);
+            const userDoc = await getDoc(userDocRef);
 
-          if (userDoc.exists()) {
-            setUsername(userDoc.data().username);
+            if (userDoc.exists()) {
+              setUsername(userDoc.data().username); // Set the username
+            } else {
+              console.log("User document does not exist");
+              setUsername("Unknown User");
+            }
           } else {
-            console.log("User document does not exist");
-            setUsername("Unknown User");
+            setUsername("Guest"); // No user is logged in
           }
-        } else {
-          setUsername("Guest");
-        }
+        });
+
+        return () => unsubscribe(); // Clean up the listener when the component unmounts
       } catch (error) {
         console.error("Error fetching username:", error);
         setUsername("Error fetching username");
       }
     };
 
-    fetchUsername();
+    fetchUsername(); // Call the function
   }, []);
 
   useEffect(() => {
