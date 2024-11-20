@@ -160,7 +160,7 @@
   font-size: 30px;
   color: #a57a1e;
   margin-left: 10px;
-  transition: 0.2s ease;
+  transition: filter 0.2s ease;
 }
 .user-input-submit:hover {
   filter: brightness(1.2);
@@ -178,7 +178,7 @@
   font-size: 30px;
   color: #a57a1e;
   margin-left: 10px;
-  transition: 0.2s ease;
+  transition: filter 0.2s ease;
 }
 .user-input-next:hover {
   filter: brightness(1.2);
@@ -193,7 +193,7 @@
 
 .right-content {
   position: absolute;
-  margin-top: 111px;
+  margin-top: 100px;
   right: 255px;
 }
 
@@ -207,6 +207,7 @@
 
 .rankbtn:hover {
   filter: brightness(1.35);
+  scale: 1.01;
 }
 
 .footer-game {
