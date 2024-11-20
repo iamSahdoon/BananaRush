@@ -43,6 +43,7 @@ export const Game = () => {
       setQuestionImage(data.question);
       setSolution(data.solution);
       setTimeLeft(timer); // Reset the timer for the next question
+      setFeedback(""); // Reset feedback to initial state
     } catch (error) {
       console.error("Failed to fetch API:", error);
     } finally {
@@ -63,12 +64,16 @@ export const Game = () => {
 
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
-      setTimeLeft(0); // Stop the timer
-      fetchQuestion(); // Fetch the next quiz question
     } else {
       setFeedback("Wrong! 😞");
     }
+
     setUserAnswer(""); // Clear the input field after submission
+
+    // Delay before moving to the next quiz
+    setTimeout(() => {
+      fetchQuestion(); // Fetch the next quiz question
+    }, 2000); // 2-second delay
   };
 
   return (
