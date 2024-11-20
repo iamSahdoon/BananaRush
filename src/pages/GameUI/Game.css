@@ -209,6 +209,15 @@
   scale: 1.01;
 }
 
+.calculation {
+  display: flex;
+}
+
+.calculation .time {
+  margin-left: 20px;
+  color: #bdbdbd;
+}
+
 .footer-game {
   position: fixed;
   display: flex;

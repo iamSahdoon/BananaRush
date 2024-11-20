@@ -10,33 +10,33 @@ export const Game = () => {
   const location = useLocation();
   const { timer } = location.state || { timer: 30 }; // Default to 30 seconds if not provided
 
-  const [username, setUsername] = useState("Fetching..."); // State to hold the username
+  const [username, setUsername] = useState("Fetching...");
   const [timeLeft, setTimeLeft] = useState(timer);
-  const [questionImage, setQuestionImage] = useState(null); // Holds the quiz image URL
-  const [solution, setSolution] = useState(null); // Holds the solution from the API
-  const [loading, setLoading] = useState(true); // Track API loading state
-  const [userAnswer, setUserAnswer] = useState(""); // Holds the user's input
-  const [feedback, setFeedback] = useState(""); // Holds feedback (Correct/Wrong)
-  const [isPaused, setIsPaused] = useState(false); // To control timer pause
-  const [canProceed, setCanProceed] = useState(false); // Controls Next Quiz button state
+  const [questionImage, setQuestionImage] = useState(null);
+  const [solution, setSolution] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [isPaused, setIsPaused] = useState(false);
+  const [canProceed, setCanProceed] = useState(false);
+  const [calculationTime, setCalculationTime] = useState(null); // State to store calculation time
 
-  // Fetch username from Firestore
   useEffect(() => {
     const fetchUsername = async () => {
       try {
         if (auth.currentUser) {
-          const userUid = auth.currentUser.uid; // Get current user's UID
-          const userDocRef = doc(database, "users", userUid); // Reference to the user's Firestore document
-          const userDoc = await getDoc(userDocRef); // Fetch the document
+          const userUid = auth.currentUser.uid;
+          const userDocRef = doc(database, "users", userUid);
+          const userDoc = await getDoc(userDocRef);
 
           if (userDoc.exists()) {
-            setUsername(userDoc.data().username); // Set the username from Firestore data
+            setUsername(userDoc.data().username);
           } else {
             console.log("User document does not exist");
             setUsername("Unknown User");
           }
         } else {
-          setUsername("Guest"); // Handle the case where no user is logged in
+          setUsername("Guest");
         }
       } catch (error) {
         console.error("Error fetching username:", error);
@@ -44,10 +44,9 @@ export const Game = () => {
       }
     };
 
-    fetchUsername(); // Call the function on component mount
-  }, []); // Empty dependency array to run once
+    fetchUsername();
+  }, []);
 
-  // Timer countdown
   useEffect(() => {
     if (timeLeft <= 0 || isPaused) return;
 
@@ -68,19 +67,20 @@ export const Game = () => {
 
   const fetchQuestion = async () => {
     try {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       const response = await fetch("https://marcconrad.com/uob/banana/api.php");
       const data = await response.json();
       setQuestionImage(data.question);
       setSolution(data.solution);
-      setTimeLeft(timer); // Reset the timer for the next question
-      setFeedback(""); // Reset feedback to initial state
-      setIsPaused(false); // Unpause the timer
-      setCanProceed(false); // Disable the Next Quiz button
+      setTimeLeft(timer);
+      setFeedback("");
+      setIsPaused(false);
+      setCanProceed(false);
+      setCalculationTime(null); // Reset calculation time for the next quiz
     } catch (error) {
       console.error("Failed to fetch API:", error);
     } finally {
-      setLoading(false); // Set loading to false after fetching
+      setLoading(false);
     }
   };
 
@@ -90,19 +90,20 @@ export const Game = () => {
 
   const handleSubmit = () => {
     if (!userAnswer) {
-      setFeedback("Please enter a number!"); // Feedback for empty input
+      setFeedback("Please enter a number!");
       return;
     }
 
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
-      setIsPaused(true); // Pause the timer
-      setCanProceed(true); // Enable the Next Quiz button
+      setIsPaused(true);
+      setCanProceed(true);
+      setCalculationTime(timer - timeLeft); // Calculate and set the calculation time
     } else {
       setFeedback("Wrong! 😞");
     }
 
-    setUserAnswer(""); // Clear the input field after submission
+    setUserAnswer("");
   };
 
   const handleNextQuiz = () => {
@@ -125,7 +126,7 @@ export const Game = () => {
         <div className="game">
           <div className="header-game">
             <h1>Banana Rush</h1>
-            <p>{username}</p> {/* Display the username */}
+            <p>{username}</p>
           </div>
           <div className="bananaAPI">
             <p className="timer">{formatTime(timeLeft)}</p>
@@ -162,9 +163,13 @@ export const Game = () => {
                 <p>Total points: </p>
                 <p className="points"></p>
               </span>
-              <span>
-                <p>Time taken: </p>
-                <p className="time"></p>
+              <span className="calculation">
+                <p>Your calculation time: </p>
+                <p className="time">
+                  {calculationTime !== null
+                    ? `${calculationTime} seconds`
+                    : "N/A"}
+                </p>
               </span>
             </div>
             <div className="right-content">
