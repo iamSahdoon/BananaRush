@@ -2,9 +2,33 @@ import "./Game.css";
 import back from "../images/back.svg";
 import bananaimg from "../images/bananaAPIimg.svg";
 import rankingbtn from "../images/rankingbtn.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const Game = () => {
+  const location = useLocation();
+  const { timer } = location.state || { timer: 30 }; // Default to 30 seconds if not provided
+
+  const [timeLeft, setTimeLeft] = useState(timer);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const countdown = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(countdown);
+  }, [timeLeft]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
   return (
     <>
       <div className="container-game">
@@ -19,14 +43,11 @@ export const Game = () => {
             <h3>username</h3>
           </div>
           <div className="bananaAPI">
-            <p className="timer">00:00:00</p>
+            <p className="timer">{formatTime(timeLeft)}</p>
             <img src={bananaimg} alt="API-img" />
             <p className="answer">Correct / wrong</p>
           </div>
         </div>
-        {/* <div className="hr">
-          <hr />
-        </div> */}
         <div className="score-container-main">
           <div className="score-container">
             <div className="left-content">
