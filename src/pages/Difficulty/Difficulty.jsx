@@ -20,17 +20,17 @@ export const Difficulty = () => {
         </div>
 
         <div className="diff-section">
-          <Link to="/thegame">
+          <Link to="/thegame" state={{ timer: 30 }}>
             <button>
               <img src={diff1} alt="difficulty1" />
             </button>
           </Link>
-          <Link to="/thegame">
+          <Link to="/thegame" state={{ timer: 25 }}>
             <button>
               <img src={diff2} alt="difficulty2" />
             </button>
           </Link>
-          <Link to="/thegame">
+          <Link to="/thegame" state={{ timer: 20 }}>
             <button>
               <img src={diff3} alt="difficulty3" />
             </button>
