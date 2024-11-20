@@ -35,23 +35,23 @@ export const Game = () => {
   };
 
   // Fetch the quiz question from the API
-  useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        setLoading(true); // Set loading to true before fetching
-        const response = await fetch(
-          "https://marcconrad.com/uob/banana/api.php"
-        );
-        const data = await response.json();
-        setQuestionImage(data.question);
-        setSolution(data.solution);
-      } catch (error) {
-        console.error("Failed to fetch API:", error);
-      } finally {
-        setLoading(false); // Set loading to false after fetching
-      }
-    };
+  const fetchQuestion = async () => {
+    try {
+      setLoading(true); // Set loading to true before fetching
+      const response = await fetch("https://marcconrad.com/uob/banana/api.php");
+      const data = await response.json();
+      setQuestionImage(data.question);
+      setSolution(data.solution);
+      setTimeLeft(timer); // Reset the timer for the next question
+    } catch (error) {
+      console.error("Failed to fetch API:", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
+    }
+  };
 
+  // Fetch the first quiz question on component mount
+  useEffect(() => {
     fetchQuestion();
   }, []); // Empty dependency array ensures this runs only once
 
@@ -63,9 +63,12 @@ export const Game = () => {
 
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
+      setTimeLeft(0); // Stop the timer
+      fetchQuestion(); // Fetch the next quiz question
     } else {
       setFeedback("Wrong! 😞");
     }
+    setUserAnswer(""); // Clear the input field after submission
   };
 
   return (
