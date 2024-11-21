@@ -33,6 +33,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 10;
+  /* background-color: #0f0f0f4b;
+  backdrop-filter: blur(30px); */
+}
+
+.spinner img {
+  z-index: 100;
+  width: 200px;
+  height: 200px;
+  animation: spin 7s infinite linear;
+  margin-top: 200px;
+  margin-left: 250px;
+  margin-right: 250px;
+  opacity: 1;
+}
+.spinner p {
+  z-index: 100;
+  margin-left: 328px;
+  margin-right: 250px;
+  opacity: 1;
+  font-size: 40px;
+  color: #c49227;
 }
 
 .header-back-game:hover {

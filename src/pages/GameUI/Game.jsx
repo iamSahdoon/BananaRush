@@ -1,6 +1,7 @@
 import "./Game.css";
 import back from "../images/back.svg";
 import rankingbtn from "../images/rankingbtn.svg";
+import spinner from "../images/spinner1.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth, database } from "../../firebase/config"; // Firebase services
@@ -151,8 +152,14 @@ export const Game = () => {
           </Link>
         </div>
         <div className="spinner">
-          <img src="" alt="spinner" />
-          <img src="" alt="spinner" />
+          <div className="left-spinner-div">
+            <img src={spinner} alt="spinner" />
+            <p className="spinner-p-left">00</p>
+          </div>
+          <div className="right-spinner-div">
+            <img src={spinner} alt="spinner" />
+            <p className="spinner-p-right">00</p>
+          </div>
         </div>
         <div className="game">
           <div className="header-game">
