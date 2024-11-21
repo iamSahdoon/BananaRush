@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { auth, database } from "../../firebase/config"; // Firebase services
 import { doc, getDoc, updateDoc } from "firebase/firestore"; // Firestore functions
 
+import axios from "axios";
+
 export const Game = () => {
   const location = useLocation();
   const { timer } = location.state || { timer: 30 }; // Default to 30 seconds if not provided
@@ -22,6 +24,8 @@ export const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
   const [calculationTime, setCalculationTime] = useState(null); // State to store calculation time
+
+  const [randomNumber, setRandomNumber] = useState("00"); // State for random number
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -74,6 +78,19 @@ export const Game = () => {
     }
   };
 
+  const fetchRandomNumber = async () => {
+    try {
+      const response = await axios.get(
+        "/api/v1.0/random?min=100&max=1000&count=1"
+      );
+      console.log(response.data);
+      const resdata = response.data[0].toString(); // Ensure two-digit display
+      setRandomNumber(resdata);
+    } catch (error) {
+      console.error("Error fetching random number:", error);
+    }
+  };
+
   useEffect(() => {
     if (timeLeft <= 0 || isPaused) return;
 
@@ -123,10 +140,11 @@ export const Game = () => {
 
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
-      incrementPoints(); // Increment points in Firebase
+      incrementPoints();
+      fetchRandomNumber(); // Fetch a random number on correct answer
       setIsPaused(true);
       setCanProceed(true);
-      setCalculationTime(timer - timeLeft); // Calculate and set the calculation time
+      setCalculationTime(timer - timeLeft);
     } else {
       setFeedback("Wrong! 😞");
     }
@@ -154,11 +172,11 @@ export const Game = () => {
         <div className="spinner">
           <div className="left-spinner-div">
             <img src={spinner} alt="spinner" />
-            <p className="spinner-p-left">00</p>
+            <p className="spinner-p-left">{randomNumber}</p>
           </div>
           <div className="right-spinner-div">
             <img src={spinner} alt="spinner" />
-            <p className="spinner-p-right">00</p>
+            <p className="spinner-p-right">{randomNumber}</p>
           </div>
         </div>
         <div className="game">
