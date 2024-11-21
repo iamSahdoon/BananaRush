@@ -3,8 +3,8 @@ import back from "../images/back.svg";
 import rankingbtn from "../images/rankingbtn.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { auth, database } from "../../firebase/config"; // Import Firebase services
-import { doc, getDoc } from "firebase/firestore"; // Firestore functions
+import { auth, database } from "../../firebase/config"; // Firebase services
+import { doc, getDoc, updateDoc } from "firebase/firestore"; // Firestore functions
 
 export const Game = () => {
   const location = useLocation();
@@ -17,12 +17,13 @@ export const Game = () => {
   const [loading, setLoading] = useState(true);
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
+  const [points, setPoints] = useState(0); // State to store user points
   const [isPaused, setIsPaused] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
   const [calculationTime, setCalculationTime] = useState(null); // State to store calculation time
 
   useEffect(() => {
-    const fetchUsername = async () => {
+    const fetchUserData = async () => {
       try {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
           if (user) {
@@ -31,25 +32,46 @@ export const Game = () => {
             const userDoc = await getDoc(userDocRef);
 
             if (userDoc.exists()) {
-              setUsername(userDoc.data().username); // Set the username
+              const userData = userDoc.data();
+              setUsername(userData.username || "Unknown User");
+              setPoints(userData.points || 0); // Fetch initial points
             } else {
               console.log("User document does not exist");
               setUsername("Unknown User");
+              setPoints(0); // Default points if user document is missing
             }
           } else {
-            setUsername("Guest"); // No user is logged in
+            setUsername("Guest");
+            setPoints(0); // Default points for guests
           }
         });
 
         return () => unsubscribe(); // Clean up the listener when the component unmounts
       } catch (error) {
-        console.error("Error fetching username:", error);
+        console.error("Error fetching user data:", error);
         setUsername("Error fetching username");
+        setPoints(0); // Handle error case
       }
     };
 
-    fetchUsername(); // Call the function
+    fetchUserData(); // Call the function
   }, []);
+
+  const incrementPoints = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userUid = user.uid;
+        const userDocRef = doc(database, "users", userUid);
+
+        const newPoints = points + 10; // Increment points by 10
+        await updateDoc(userDocRef, { points: newPoints }); // Update Firestore
+        setPoints(newPoints); // Update state
+      }
+    } catch (error) {
+      console.error("Error updating points:", error);
+    }
+  };
 
   useEffect(() => {
     if (timeLeft <= 0 || isPaused) return;
@@ -100,6 +122,7 @@ export const Game = () => {
 
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
+      incrementPoints(); // Increment points in Firebase
       setIsPaused(true);
       setCanProceed(true);
       setCalculationTime(timer - timeLeft); // Calculate and set the calculation time
@@ -163,9 +186,9 @@ export const Game = () => {
                   Next Quiz
                 </button>
               </div>
-              <span>
+              <span className="point-container">
                 <p>Total points: </p>
-                <p className="points"></p>
+                <p className="points">{points}</p> {/* Display points */}
               </span>
               <span className="calculation">
                 <p>Your calculation time: </p>

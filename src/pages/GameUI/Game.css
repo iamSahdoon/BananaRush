@@ -218,6 +218,14 @@
   color: #bdbdbd;
 }
 
+.point-container {
+  display: flex;
+}
+.point-container .points {
+  margin-left: 20px;
+  color: #bdbdbd;
+}
+
 .footer-game {
   position: fixed;
   display: flex;
