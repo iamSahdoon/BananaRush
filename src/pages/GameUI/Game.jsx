@@ -150,6 +150,10 @@ export const Game = () => {
             <img src={back} alt="Banana Login Signup" />
           </Link>
         </div>
+        <div className="spinner">
+          <img src="" alt="spinner" />
+          <img src="" alt="spinner" />
+        </div>
         <div className="game">
           <div className="header-game">
             <h1>Banana Rush</h1>
