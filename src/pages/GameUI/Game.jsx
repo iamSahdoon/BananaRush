@@ -88,8 +88,27 @@ export const Game = () => {
       console.log(response.data);
       const resdata = response.data[0].toString(); // Ensure two-digit display
       setRandomNumber(resdata);
+
+      // Update points with the fetched random number
+      await updatePointsWithRandomNumber(resdata);
     } catch (error) {
       console.error("Error fetching random number:", error);
+    }
+  };
+
+  const updatePointsWithRandomNumber = async (randomPoints) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userUid = user.uid;
+        const userDocRef = doc(database, "users", userUid);
+
+        const newPoints = points + parseInt(randomPoints, 10); // Add random points
+        await updateDoc(userDocRef, { points: newPoints }); // Update Firestore
+        setPoints(newPoints); // Update state
+      }
+    } catch (error) {
+      console.error("Error updating points with random number:", error);
     }
   };
 
