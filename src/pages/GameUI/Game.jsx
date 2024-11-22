@@ -26,6 +26,8 @@ export const Game = () => {
   const [calculationTime, setCalculationTime] = useState(null); // State to store calculation time
 
   const [randomNumber, setRandomNumber] = useState("00"); // State for random number
+  const [correctCount, setCorrectCount] = useState(0); // State to track correct answers
+  const [spinnerActive, setSpinnerActive] = useState(false); // State to control spinner
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -81,7 +83,7 @@ export const Game = () => {
   const fetchRandomNumber = async () => {
     try {
       const response = await axios.get(
-        "/api/v1.0/random?min=100&max=1000&count=1"
+        "/api/v1.0/random?min=10&max=100&count=1"
       );
       console.log(response.data);
       const resdata = response.data[0].toString(); // Ensure two-digit display
@@ -99,6 +101,13 @@ export const Game = () => {
     }, 1000);
 
     return () => clearInterval(countdown);
+  }, [timeLeft, isPaused]);
+
+  useEffect(() => {
+    if (timeLeft === 0 && !isPaused) {
+      setFeedback("Your calculation speed is too slow, practice more !!!");
+      setIsPaused(true); // Stop the timer once it hits 0
+    }
   }, [timeLeft, isPaused]);
 
   const formatTime = (seconds) => {
@@ -141,10 +150,22 @@ export const Game = () => {
     if (parseInt(userAnswer, 10) === solution) {
       setFeedback("Correct! 🎉");
       incrementPoints();
-      fetchRandomNumber(); // Fetch a random number on correct answer
-      setIsPaused(true);
+      setIsPaused(true); // Stop the timer
       setCanProceed(true);
       setCalculationTime(timer - timeLeft);
+      setCorrectCount(correctCount + 1); // Increment correct count
+
+      if (correctCount + 1 === 3) {
+        fetchRandomNumber(); // Fetch a random number on correct answer
+        setSpinnerActive(true); // Activate spinner
+        setCorrectCount(0); // Reset correct count after 3 correct answers
+      }
+
+      if (spinnerActive) {
+        // Reset spinner state after random number is generated
+        setSpinnerActive(false);
+        setRandomNumber("00"); // Reset random number
+      }
     } else {
       setFeedback("Wrong! 😞");
     }
