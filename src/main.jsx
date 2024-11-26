@@ -19,11 +19,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/login",
+    path: "/LoginSignup",
     element: <LoginSignup />,
   },
   {
-    path: "/loginSection",
+    path: "/login",
     element: <Login />,
   },
   {

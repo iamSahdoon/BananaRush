@@ -38,7 +38,7 @@ export const LoginSignup = () => {
           </div>
         </div>
         <div className="play-button2">
-          <Link to="/loginSection">LOGIN</Link>
+          <Link to="/login">LOGIN</Link>
           <Link to="/signup">SIGN UP</Link>
           {/* <Link>PLAY AS A GUEST</Link> */}
         </div>

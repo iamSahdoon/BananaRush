@@ -35,6 +35,12 @@
   background-color: transparent;
   font-size: 30px;
   color: #a78233;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.logout:hover {
+  filter: brightness(1.2);
+  color: #a10e0e;
 }
 
 .hero-section {
