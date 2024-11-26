@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth, database } from "../../firebase/config"; // Firebase services
 import { doc, getDoc, updateDoc } from "firebase/firestore"; // Firestore functions
+import { format } from "date-fns";
 
 import axios from "axios";
 
@@ -28,6 +29,29 @@ export const Game = () => {
   const [randomNumber, setRandomNumber] = useState("00"); // State for random number
   const [correctCount, setCorrectCount] = useState(0); // State to track correct answers
   const [spinnerActive, setSpinnerActive] = useState(false); // State to control spinner
+
+  useEffect(() => {
+    const recordLastMatchDate = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userUid = user.uid;
+          const userDocRef = doc(database, "users", userUid);
+
+          // Get the current date
+          const currentDate = format(new Date(), "yyyy-MM-dd HH:mm:ss"); // Format: YYYY-MM-DD HH:MM:SS
+
+          // Update the Firestore document
+          await updateDoc(userDocRef, { lastMatchDate: currentDate });
+          console.log("Last match date recorded:", currentDate);
+        }
+      } catch (error) {
+        console.error("Error recording last match date:", error);
+      }
+    };
+
+    recordLastMatchDate(); // Call the function when the component mounts
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {

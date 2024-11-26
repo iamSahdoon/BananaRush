@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, orderBy } from "firebase/firestore"; // Firestore functions
 import { database } from "../../firebase/config"; // Firebase config
+import { format } from "date-fns"; // Import date-fns for formatting
 
 export const Ranking = () => {
   const [users, setUsers] = useState([]); // State to store users
@@ -17,17 +18,33 @@ export const Ranking = () => {
       const usersQuery = query(usersCollection, orderBy("points", "desc")); // Query to order users by points
       const querySnapshot = await getDocs(usersQuery);
 
-      const usersList = querySnapshot.docs.map((doc, index) => ({
-        id: doc.id,
-        rank: index + 1,
-        username: doc.data().username || "Unknown User",
-        points: doc.data().points || 0,
-        lastMatchDate: doc.data().lastMatchDate
-          ? new Date(
-              doc.data().lastMatchDate.seconds * 1000
-            ).toLocaleDateString() // Convert Firestore timestamp to readable date
-          : "N/A",
-      }));
+      const usersList = querySnapshot.docs.map((doc, index) => {
+        const lastMatchDate = doc.data().lastMatchDate;
+
+        let formattedDate = "N/A"; // Default value
+
+        if (lastMatchDate) {
+          // Check if the lastMatchDate is a Firestore timestamp
+          if (lastMatchDate.seconds) {
+            // If it's a Firestore Timestamp, format it using date-fns
+            formattedDate = format(
+              new Date(lastMatchDate.seconds * 1000),
+              "dd-MM-yyyy HH:mm:ss"
+            );
+          } else if (typeof lastMatchDate === "string") {
+            // If it's a string, just use it (assuming it's in the correct format)
+            formattedDate = lastMatchDate;
+          }
+        }
+
+        return {
+          id: doc.id,
+          rank: index + 1,
+          username: doc.data().username || "Unknown User",
+          points: doc.data().points || 0,
+          lastMatchDate: formattedDate,
+        };
+      });
 
       setUsers(usersList); // Update users state
     } catch (error) {
