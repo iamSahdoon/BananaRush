@@ -269,9 +269,9 @@ export const Game = () => {
               </span>
             </div>
             <div className="right-content">
-              <button className="rankbtn">
+              <Link to="/ranking" className="rankbtn">
                 <img src={rankingbtn} alt="rankbtn" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
