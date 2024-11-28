@@ -62,16 +62,59 @@
 table {
   border-collapse: collapse;
   height: 100%;
-  width: 1295px;
+  width: 1420px;
 }
 
 table td,
 th {
   font-family: ThaleahFat, "VT323", monospace;
-  color: #9b7524;
+  color: #b4892b;
   font-size: 24px;
   border: 2px solid #b3872a;
   padding: 10px;
   text-align: center;
   white-space: nowrap;
+  transition: 0.3s ease;
+}
+
+table tbody td {
+  color: #af8e46;
+}
+
+table tr {
+  transition: 0.2s ease;
+}
+
+table tr:hover {
+  color: #bd8f2d;
+  border: 2px solid #b3872a;
+  background-color: #0000007e;
+}
+
+table {
+  transition: 0.3 ease;
+  background-color: #00000056;
+}
+table th {
+  background-color: #0000006b;
+  letter-spacing: 1px;
+}
+table:hover {
+  background-color: #00000050;
+}
+
+.footer-game {
+  position: fixed;
+  display: flex;
+  bottom: 20px;
+  width: 100%; /* Full width of the viewport */
+  padding: 0 52px; /* Optional padding for some spacing on the sides */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-game p {
+  font-family: ThaleahFat, "VT323", monospace;
+  font-size: 28px;
+  color: #5c4e31;
 }

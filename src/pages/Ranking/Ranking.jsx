@@ -69,7 +69,7 @@ export const Ranking = () => {
         </div>
 
         <div className="hero-text-ranking">
-          <h1>Banana Ranking</h1>
+          <h1>World Ranking</h1>
           {loading ? (
             <p>Loading...</p>
           ) : (
@@ -97,6 +97,10 @@ export const Ranking = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="footer-game">
+        <p>V1.0</p>
+        <p>made by : Sabique</p>
       </div>
     </>
   );
