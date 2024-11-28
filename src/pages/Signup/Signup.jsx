@@ -92,7 +92,7 @@ export const Signup = () => {
         </div>
 
         <div className="mid-section">
-          <h1>Sign up</h1>
+          <p>Sign up</p>
         </div>
 
         <div className="box-container">
@@ -134,7 +134,7 @@ export const Signup = () => {
               {registerError && <span>:( {registerError}</span>}
             </div>
             <div className="img-container">
-              <Link to="/loginSection">
+              <Link to="/login">
                 <img className="tosignup" src={tologin} alt="siginup" />
               </Link>
               <button type="submit" onClick={handleRegister}>

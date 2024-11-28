@@ -69,7 +69,7 @@ export const Ranking = () => {
         </div>
 
         <div className="hero-text-ranking">
-          <h1>World Ranking</h1>
+          <p>World Ranking</p>
           {loading ? (
             <p>Loading...</p>
           ) : (

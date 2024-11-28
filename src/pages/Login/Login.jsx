@@ -74,7 +74,7 @@ export const Login = () => {
         </div>
 
         <div className="mid-section">
-          <h1>Login</h1>
+          <p>Login</p>
         </div>
 
         <div className="box-container">

@@ -16,7 +16,7 @@ export const Difficulty = () => {
         </div>
 
         <div className="mid-section">
-          <h1>Difficulty</h1>
+          <p>Difficulty</p>
         </div>
 
         <div className="diff-section">

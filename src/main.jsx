@@ -11,6 +11,7 @@ import { Signup } from "./pages/Signup/Signup.jsx";
 import { Difficulty } from "./pages/Difficulty/Difficulty.jsx";
 import { Game } from "./pages/GameUI/Game.jsx";
 import { Ranking } from "./pages/Ranking/Ranking.jsx";
+import { Details } from "./pages/Details/Details.jsx";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "ranking",
     element: <Ranking />,
+  },
+  {
+    path: "/details",
+    element: <Details />,
   },
 ]);
 

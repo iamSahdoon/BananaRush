@@ -15,7 +15,7 @@ export const LoginSignup = () => {
 
         <div className="hero-section">
           <div className="hero-text">
-            <h1>BANANA RUSH</h1>
+            <p>BANANA RUSH</p>
           </div>
           <div className="banana-line">
             <img className="spin" src={bananapixelart} alt="" />
