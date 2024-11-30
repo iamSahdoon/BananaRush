@@ -40,16 +40,22 @@
 
 .github a {
   position: absolute;
-  top: 20%;
-  left: 29%;
+  top: 9%;
+  left: 30%;
   scale: 0.3;
   transition: 0.3s ease;
   z-index: 100;
 }
 .github a:hover {
-  filter: brightness(1.2);
   scale: 0.33;
   filter: drop-shadow(0px 0px 40px #000000d8);
+}
+
+.github img {
+  transition: 0.3s ease;
+}
+.github img:hover {
+  filter: brightness(1.3);
 }
 
 .main-header {

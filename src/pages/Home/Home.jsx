@@ -59,7 +59,9 @@ export const Home = () => {
     <>
       <div className="container">
         <div className="header-icon">
-          <img src={InfoIcon} alt="Banana Login Signup" />
+          <Link to="/details">
+            <img src={InfoIcon} alt="Banana Login Signup" />
+          </Link>
           <div className="old-user-container">
             <h1 className="user-name">{username}</h1>{" "}
             {/* Display the username */}
