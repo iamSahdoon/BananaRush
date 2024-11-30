@@ -104,6 +104,7 @@ export const Game = () => {
     }
   };
 
+  // Interoperability 2
   const fetchRandomNumber = async () => {
     try {
       const response = await axios.get(
@@ -161,6 +162,7 @@ export const Game = () => {
       .padStart(2, "0")}`;
   };
 
+  //interoperability 01
   const fetchQuestion = async () => {
     try {
       setLoading(true);
