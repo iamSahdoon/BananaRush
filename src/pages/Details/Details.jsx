@@ -1,7 +1,7 @@
-import "../styles/details.css";
-import back from "../assets/images/back.svg";
-import info from "../assets/images/info-img.svg";
-import github from "../assets/images/github.svg";
+import "./Details.css";
+import back from "../../assets/images/back.svg";
+import info from "../../assets/images/info-img.svg";
+import github from "../../assets/images/github.svg";
 
 import { Link } from "react-router-dom";
 

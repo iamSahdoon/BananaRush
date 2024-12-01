@@ -1,18 +1,16 @@
+import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-// import { Home } from "./pages/Home/Home.jsx";
-import { Home } from "./page/Home.jsx";
-import { LoginSignup } from "./page/LoginSignup";
-import "./index.css";
+import { Home } from "./pages/Home/Home.jsx";
+import { LoginSignup } from "./pages/LoginSignup/LoginSignup.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ErrorPage } from "./page/ErrorPage.jsx";
-import { Login } from "./page/Login.jsx";
-import { Signup } from "./page/Signup.jsx";
-import { Difficulty } from "./page/Difficulty.jsx";
-import { Game } from "./page/Game.jsx";
-import { Ranking } from "./page/Ranking.jsx";
-// import { Details } from "./pages/Details/Details.jsx";
-import { Details } from "./page/Details.jsx";
+import { ErrorPage } from "./pages/ErrorPage/ErrorPage.jsx";
+import { Login } from "./pages/Login/Login.jsx";
+import { Signup } from "./pages/Signup/Signup.jsx";
+import { Difficulty } from "./pages/Difficulty/Difficulty.jsx";
+import { Game } from "./pages/GameUI/Game.jsx";
+import { Ranking } from "./pages/Ranking/Ranking.jsx";
+import { Details } from "./pages/Details/Details.jsx";
 
 const router = createBrowserRouter([
   {
