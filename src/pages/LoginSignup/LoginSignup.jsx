@@ -1,4 +1,4 @@
-import "./LoginSignup.css";
+import "../../styles/LoginSignup.css";
 import back from "../../assets/images/back.svg";
 import bananapixelart from "../../assets/images/banana-pixel-art.svg";
 import { Link } from "react-router-dom";

@@ -1,4 +1,4 @@
-import "./Home.css";
+import "../../styles/Home.css";
 import InfoIcon from "../../assets/images/info.svg";
 import bananapixelart from "../../assets/images/banana-pixel-art.svg";
 import { Link } from "react-router-dom";

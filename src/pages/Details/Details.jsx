@@ -1,4 +1,4 @@
-import "./Details.css";
+import "../../styles/Details.css";
 import back from "../../assets/images/back.svg";
 import info from "../../assets/images/info-img.svg";
 import github from "../../assets/images/github.svg";

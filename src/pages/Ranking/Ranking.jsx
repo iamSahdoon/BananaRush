@@ -1,4 +1,4 @@
-import "./Ranking.css";
+import "../../styles/Ranking.css";
 import back from "../../assets/images/back.svg";
 
 import { Link } from "react-router-dom";

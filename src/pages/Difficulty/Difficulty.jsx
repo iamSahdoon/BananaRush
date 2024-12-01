@@ -1,4 +1,4 @@
-import "./Difficulty.css";
+import "../../styles/Difficulty.css";
 import back from "../../assets/images/back.svg";
 import diff1 from "../../assets/images/diff1.svg";
 import diff2 from "../../assets/images/diff2.svg";

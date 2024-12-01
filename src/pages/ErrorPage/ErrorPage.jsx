@@ -1,5 +1,5 @@
 import ErrorBanana from "../../assets/images/errorBanana.png";
-import "./Error.css";
+import "../../styles/Error.css";
 import { Link } from "react-router-dom";
 
 export const ErrorPage = () => {

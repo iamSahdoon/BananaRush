@@ -1,4 +1,4 @@
-import "./Game.css";
+import "../../styles/Game.css";
 import back from "../../assets/images/back.svg";
 import rankingbtn from "../../assets/images/rankingbtn.svg";
 import spinner from "../../assets/images/spinner1.svg";
