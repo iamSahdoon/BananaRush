@@ -1,15 +1,26 @@
 import "./Home.css";
 import InfoIcon from "../../assets/images/info.svg";
 import bananapixelart from "../../assets/images/banana-pixel-art.svg";
+import audioPlay from "../../assets/images/audio_play.svg";
+import audioPause from "../../assets/images/audio_pause.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth, database } from "../../firebase/config"; // Import Firebase services
 import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 import { signOut } from "firebase/auth"; // Import Firebase signOut function
 
+import themeSong from "../../assets/sounds/Homeandrank .mp3";
+import gameStart from "../../assets/sounds/game-start.mp3";
+
+import { useNavigate } from "react-router-dom";
+
 export const Home = () => {
   const [username, setUsername] = useState("Fetching..."); // State to hold the username
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const bgAudio = new Audio(themeSong);
+  const gameStartAudio = new Audio(gameStart);
+
+  const navigate = useNavigate(); // Initialize navigate function
 
   // Fetch username and authentication state
   useEffect(() => {
@@ -55,19 +66,54 @@ export const Home = () => {
     }
   };
 
+  const playAudiobg = async () => {
+    bgAudio.loop = true; // Enable looping
+    try {
+      await bgAudio.play(); // Wait for the audio to start playing
+    } catch (error) {
+      console.error("Audio playback failed:", error);
+    }
+  };
+
+  const pauseAudiobg = async () => {
+    bgAudio.pause();
+  };
+
+  const playAudioStartandNavigate = async () => {
+    try {
+      await gameStartAudio.play(); // Play the game start sound
+    } catch (error) {
+      console.error("Audio playback failed:", error);
+    }
+    bgAudio.pause();
+    // Navigate to the appropriate page based on login status
+    navigate(isLoggedIn ? "/difficulty" : "/LoginSignup");
+  };
+
   return (
     <>
       <div className="container">
+        <div className="audio-btn-home">
+          <div className="audio-btn">
+            <button onClick={playAudiobg}>
+              <img src={audioPlay} alt="" />
+            </button>
+            <button onClick={pauseAudiobg}>
+              <img src={audioPause} alt="" />
+            </button>
+          </div>
+        </div>
+
         <div className="header-icon">
           <Link to="/details">
             <img src={InfoIcon} alt="Banana Login Signup" />
           </Link>
           <div className="old-user-container">
-            <h1 className="user-name">{username}</h1>{" "}
+            <h1 className="user-name">{username}</h1>
             {/* Display the username */}
             <button className="logout" onClick={handleLogout}>
               Logout
-            </button>{" "}
+            </button>
             {/* Logout button */}
           </div>
         </div>
@@ -97,8 +143,7 @@ export const Home = () => {
           </div>
         </div>
         <div className="play-button">
-          {/* Conditionally change the link based on login status */}
-          <Link to={isLoggedIn ? "/difficulty" : "/LoginSignup"}>PLAY</Link>
+          <button onClick={playAudioStartandNavigate}>PLAY</button>
         </div>
         <div className="play-btn-text">
           <p>Solve the banana quiz to gain more points and climb the rank </p>

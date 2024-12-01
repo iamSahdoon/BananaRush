@@ -9,12 +9,39 @@
 }
 
 .container {
+  position: relative;
   height: 100vh;
   width: 100vw;
   background-color: #1a1a1a;
   background-image: url("../../assets/images/Banana-Login-Signup2.svg");
   border: 2px solid rgba(255, 255, 255, 0);
 }
+
+.audio-btn {
+  display: flex;
+  position: absolute;
+  bottom: 60px;
+  right: 43px;
+}
+
+.audio-btn-home button {
+  text-decoration: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.audio-btn-home img {
+  width: 50px;
+  height: 50px;
+  transition: 0.3s ease;
+  opacity: 0.3;
+}
+
+.audio-btn-home img:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
 .header-icon {
   display: flex;
   justify-content: space-between;
@@ -102,7 +129,7 @@
   margin-top: 215px;
 }
 
-.play-button a {
+.play-button button {
   font-family: ThaleahFat, "VT323", monospace;
   font-size: 68px;
   text-decoration: none;
@@ -116,7 +143,7 @@
   transition: background-color 0.3s ease;
 }
 
-.play-button a:hover {
+.play-button button:hover {
   background-color: #ac883a57;
   color: #c99a34;
   filter: drop-shadow(0px 0px 20px #000000f5);
