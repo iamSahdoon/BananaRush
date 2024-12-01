@@ -1,9 +1,9 @@
-import "../../styles/Home.css";
-import InfoIcon from "../../assets/images/info.svg";
-import bananapixelart from "../../assets/images/banana-pixel-art.svg";
+import "../styles/Home.css";
+import InfoIcon from "../assets/images/info.svg";
+import bananapixelart from "../assets/images/banana-pixel-art.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { auth, database } from "../../firebase/config"; // Import Firebase services
+import { auth, database } from "../firebase/config"; // Import Firebase services
 import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 import { signOut } from "firebase/auth"; // Import Firebase signOut function
 

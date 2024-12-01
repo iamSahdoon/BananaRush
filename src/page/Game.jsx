@@ -1,10 +1,10 @@
-import "../../styles/Game.css";
-import back from "../../assets/images/back.svg";
-import rankingbtn from "../../assets/images/rankingbtn.svg";
-import spinner from "../../assets/images/spinner1.svg";
+import "../styles/Game.css";
+import back from "../assets/images/back.svg";
+import rankingbtn from "../assets/images/rankingbtn.svg";
+import spinner from "../assets/images/spinner1.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { auth, database } from "../../firebase/config"; // Firebase services
+import { auth, database } from "../firebase/config"; // Firebase services
 import { doc, getDoc, updateDoc } from "firebase/firestore"; // Firestore functions
 import { format } from "date-fns";
 

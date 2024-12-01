@@ -1,12 +1,12 @@
-import "../../styles  /Signup.css";
-import back from "../../assets/images/back.svg";
+import "../styles/Signup.css";
+import back from "../assets/images/back.svg";
 import { Link } from "react-router-dom";
-import tologin from "../../assets/images/tologin.svg";
-import register from "../../assets/images/register.svg";
+import tologin from "../assets/images/tologin.svg";
+import register from "../assets/images/register.svg";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, database } from "../../firebase/config"; // Import Firestore
+import { auth, database } from "../firebase/config"; // Import Firestore
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; // Import Firestore methods
 

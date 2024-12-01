@@ -1,10 +1,10 @@
-import "../../styles/Ranking.css";
-import back from "../../assets/images/back.svg";
+import "../styles/Ranking.css";
+import back from "../assets/images/back.svg";
 
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, orderBy } from "firebase/firestore"; // Firestore functions
-import { database } from "../../firebase/config"; // Firebase config
+import { database } from "../firebase/config"; // Firebase config
 import { format } from "date-fns"; // Import date-fns for formatting
 
 export const Ranking = () => {
