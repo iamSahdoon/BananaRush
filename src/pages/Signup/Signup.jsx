@@ -1,8 +1,8 @@
 import "./Signup.css";
-import back from "../images/back.svg";
+import back from "../../assets/images/back.svg";
 import { Link } from "react-router-dom";
-import tologin from "../images/tologin.svg";
-import register from "../images/register.svg";
+import tologin from "../../assets/images/tologin.svg";
+import register from "../../assets/images/register.svg";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -73,7 +73,7 @@ export const Signup = () => {
 
       // Delay navigation by 2 seconds
       setTimeout(() => {
-        navigate("/loginSection");
+        navigate("/login");
       }, 2000);
     } catch (error) {
       console.log(error);

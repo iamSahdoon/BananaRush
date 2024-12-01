@@ -1,8 +1,8 @@
 import "./Difficulty.css";
-import back from "../images/back.svg";
-import diff1 from "../images/diff1.svg";
-import diff2 from "../images/diff2.svg";
-import diff3 from "../images/diff3.svg";
+import back from "../../assets/images/back.svg";
+import diff1 from "../../assets/images/diff1.svg";
+import diff2 from "../../assets/images/diff2.svg";
+import diff3 from "../../assets/images/diff3.svg";
 import { Link } from "react-router-dom";
 
 export const Difficulty = () => {

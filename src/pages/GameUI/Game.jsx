@@ -1,7 +1,7 @@
 import "./Game.css";
-import back from "../images/back.svg";
-import rankingbtn from "../images/rankingbtn.svg";
-import spinner from "../images/spinner1.svg";
+import back from "../../assets/images/back.svg";
+import rankingbtn from "../../assets/images/rankingbtn.svg";
+import spinner from "../../assets/images/spinner1.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth, database } from "../../firebase/config"; // Firebase services

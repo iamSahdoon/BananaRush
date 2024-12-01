@@ -1,5 +1,5 @@
 import "./Ranking.css";
-import back from "../images/back.svg";
+import back from "../../assets/images/back.svg";
 
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";

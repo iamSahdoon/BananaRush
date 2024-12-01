@@ -1,8 +1,8 @@
 import "./Login.css";
-import back from "../images/back.svg";
+import back from "../../assets/images/back.svg";
 import { Link } from "react-router-dom";
-import tosignup from "../images/tosignup.svg";
-import play from "../images/play.svg";
+import tosignup from "../../assets/images/tosignup.svg";
+import play from "../../assets/images/play.svg";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate

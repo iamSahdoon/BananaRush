@@ -1,4 +1,4 @@
-import ErrorBanana from "../images/errorBanana.png";
+import ErrorBanana from "../../assets/images/errorBanana.png";
 import "./Error.css";
 import { Link } from "react-router-dom";
 

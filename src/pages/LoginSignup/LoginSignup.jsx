@@ -1,6 +1,6 @@
 import "./LoginSignup.css";
-import back from "../images/back.svg";
-import bananapixelart from "../images/banana-pixel-art.svg";
+import back from "../../assets/images/back.svg";
+import bananapixelart from "../../assets/images/banana-pixel-art.svg";
 import { Link } from "react-router-dom";
 
 export const LoginSignup = () => {
