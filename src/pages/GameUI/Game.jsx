@@ -111,7 +111,7 @@ export const Game = () => {
         "/api/v1.0/random?min=10&max=100&count=1"
       );
       console.log(response.data);
-      const resdata = response.data[0].toString(); // Ensure two-digit display
+      const resdata = response.data[0].toString();
       setRandomNumber(resdata);
 
       // Update points with the fetched random number
