@@ -18,12 +18,12 @@ export const Game = () => {
   const [timeLeft, setTimeLeft] = useState(timer);
   const [questionImage, setQuestionImage] = useState(null);
   const [solution, setSolution] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [userAnswer, setUserAnswer] = useState("");
+  const [loading, setLoading] = useState(true); // for quiz question fetching loading? display loading : display the quiz
+  const [userAnswer, setUserAnswer] = useState(""); // to set user input
   const [feedback, setFeedback] = useState("");
   const [points, setPoints] = useState(0); // State to store user points
   const [isPaused, setIsPaused] = useState(false);
-  const [canProceed, setCanProceed] = useState(false);
+  const [canProceed, setCanProceed] = useState(false); // allowed to proceed to the next quiz or no
   const [calculationTime, setCalculationTime] = useState(null); // State to store calculation time
 
   const [randomNumber, setRandomNumber] = useState("00"); // State for random number
@@ -193,6 +193,7 @@ export const Game = () => {
     }
 
     if (parseInt(userAnswer, 10) === solution) {
+      // 10 ensures decimal number
       setFeedback("Correct! 🎉");
       incrementPoints();
       setIsPaused(true); // Stop the timer
