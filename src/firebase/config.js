@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCQ6-gLh_9EvNvd1S8uKZzztQthTmdvNmY",
-  authDomain: "banana-rush-19cbc.firebaseapp.com",
-  projectId: "banana-rush-19cbc",
-  storageBucket: "banana-rush-19cbc.firebasestorage.app",
-  messagingSenderId: "517767993314",
-  appId: "1:517767993314:web:d288182c68c189851fcbbb",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

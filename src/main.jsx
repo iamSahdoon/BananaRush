@@ -54,12 +54,12 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider
       config={{
-        signInRedirectURL: "http://localhost:5173/difficulty",
-        signOutRedirectURL: "http://localhost:5173",
-        clientID: "K8ffRu0lgpfqgtBNMN01Rmoudeca",
-        baseUrl: "https://api.asgardeo.io/t/sabique",
-        scope: ["openid", "profile"],
-        storage: "localStorage",
+        signInRedirectURL: import.meta.env.VITE_ASGARDEO_SIGNIN_REDIRECT_URL,
+        signOutRedirectURL: import.meta.env.VITE_ASGARDEO_SIGNOUT_REDIRECT_URL,
+        clientID: import.meta.env.VITE_ASGARDEO_CLIENT_ID,
+        baseUrl: import.meta.env.VITE_ASGARDEO_BASE_URL,
+        scope: import.meta.env.VITE_ASGARDEO_SCOPE.split(","),
+        storage: import.meta.env.VITE_ASGARDEO_STORAGE,
       }}
     >
       <UserContextProvider>
