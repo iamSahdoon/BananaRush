@@ -2,8 +2,14 @@ import "./LoginSignup.css";
 import back from "../../assets/images/back.svg";
 import bananapixelart from "../../assets/images/banana-pixel-art.svg";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "@asgardeo/auth-react";
+// import { useContext } from "react";
+// import { UserContext } from "../context/UserContext";
 
 export const LoginSignup = () => {
+  const { state, signIn } = useAuthContext();
+  // const userDetails = useContext(UserContext);
+
   return (
     <>
       <div className="container">
@@ -40,6 +46,13 @@ export const LoginSignup = () => {
         <div className="play-button2">
           <Link to="/login">LOGIN</Link>
           <Link to="/signup">SIGN UP</Link>
+          {state.isAuthenticated ? (
+            <>
+              <button onClick={() => signIn()}>Asgardeo Login</button>
+            </>
+          ) : (
+            <button onClick={() => signIn()}>Asgardeo Login</button>
+          )}
           {/* <Link>PLAY AS A GUEST</Link> */}
         </div>
         {/* <div className="play-btn-text">

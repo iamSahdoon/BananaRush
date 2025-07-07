@@ -4,10 +4,12 @@ import bananapixelart from "../../assets/images/banana-pixel-art.svg";
 import audioPlay from "../../assets/images/audio_play.svg";
 import audioPause from "../../assets/images/audio_pause.svg";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { auth, database } from "../../firebase/config"; // Import Firebase services
 import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 import { signOut } from "firebase/auth"; // Import Firebase signOut function
+import { UserContext } from "../../context/UserContext";
+import { useAuthContext } from "@asgardeo/auth-react";
 
 import themeSong from "../../assets/sounds/Homeandrank .mp3";
 import gameStart from "../../assets/sounds/game-start.mp3";
@@ -21,6 +23,9 @@ export const Home = () => {
   const gameStartAudio = new Audio(gameStart);
 
   const navigate = useNavigate(); // Initialize navigate function
+
+  const asgardeoUser = useContext(UserContext);
+  const { state: asgardeoState, signOut: asgardeoSignOut } = useAuthContext();
 
   // Fetch username and authentication state
   useEffect(() => {
@@ -57,12 +62,18 @@ export const Home = () => {
 
   // Handle user logout
   const handleLogout = async () => {
-    try {
-      await signOut(auth); // Log out the user from Firebase
-      setUsername("Guest"); // Reset username state
-      setIsLoggedIn(false); // Set login status to false
-    } catch (error) {
-      console.error("Error logging out:", error);
+    if (asgardeoState.isAuthenticated) {
+      // Asgardeo user
+      asgardeoSignOut();
+    } else if (isLoggedIn) {
+      // Firebase user
+      try {
+        await signOut(auth);
+        setUsername("Guest");
+        setIsLoggedIn(false);
+      } catch (error) {
+        console.error("Error logging out:", error);
+      }
     }
   };
 
@@ -81,13 +92,18 @@ export const Home = () => {
 
   const playAudioStartandNavigate = async () => {
     try {
-      await gameStartAudio.play(); // Play the game start sound
+      await gameStartAudio.play();
     } catch (error) {
       console.error("Audio playback failed:", error);
     }
     bgAudio.pause();
-    // Navigate to the appropriate page based on login status
-    navigate(isLoggedIn ? "/difficulty" : "/LoginSignup");
+
+    // Navigate based on authentication status
+    if (isLoggedIn || asgardeoState.isAuthenticated) {
+      navigate("/difficulty");
+    } else {
+      navigate("/LoginSignup");
+    }
   };
 
   return (
@@ -109,7 +125,13 @@ export const Home = () => {
             <img src={InfoIcon} alt="Banana Login Signup" />
           </Link>
           <div className="old-user-container">
-            <h1 className="user-name">{username}</h1>
+            <h1 className="user-name">
+              {asgardeoUser === undefined
+                ? "Loading..."
+                : asgardeoUser && asgardeoUser.givenName
+                ? asgardeoUser.givenName
+                : username}
+            </h1>
             {/* Display the username */}
             <button className="logout" onClick={handleLogout}>
               Logout

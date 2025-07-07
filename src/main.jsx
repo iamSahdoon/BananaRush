@@ -11,6 +11,8 @@ import { Difficulty } from "./pages/Difficulty/Difficulty.jsx";
 import { Game } from "./pages/GameUI/Game.jsx";
 import { Ranking } from "./pages/Ranking/Ranking.jsx";
 import { Details } from "./pages/Details/Details.jsx";
+import { AuthProvider } from "@asgardeo/auth-react";
+import UserContextProvider from "./context/UserContextProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,19 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider
+      config={{
+        signInRedirectURL: "http://localhost:5173/difficulty",
+        signOutRedirectURL: "http://localhost:5173",
+        clientID: "K8ffRu0lgpfqgtBNMN01Rmoudeca",
+        baseUrl: "https://api.asgardeo.io/t/sabique",
+        scope: ["openid", "profile"],
+        storage: "localStorage",
+      }}
+    >
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
+    </AuthProvider>
   </StrictMode>
 );

@@ -3,10 +3,12 @@ import back from "../../assets/images/back.svg";
 import rankingbtn from "../../assets/images/rankingbtn.svg";
 import spinner from "../../assets/images/spinner1.svg";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { auth, database } from "../../firebase/config"; // Firebase services
-import { doc, getDoc, updateDoc } from "firebase/firestore"; // Firestore functions
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore"; // Firestore functions
 import { format } from "date-fns";
+import { UserContext } from "../../context/UserContext";
+import { useAuthContext } from "@asgardeo/auth-react";
 
 import axios from "axios";
 
@@ -30,19 +32,34 @@ export const Game = () => {
   const [correctCount, setCorrectCount] = useState(0); // track correct answer count - to activate spinner(wheel) // Event-Driven Programming
   const [spinnerActive, setSpinnerActive] = useState(false); // track spinners state and reest random number state // Event-Driven Programming
 
+  const asgardeoUser = useContext(UserContext);
+  const { state: asgardeoState } = useAuthContext();
+
+  const getCurrentUserId = () => {
+    if (auth.currentUser) {
+      return auth.currentUser.uid; // Firebase user
+    } else if (
+      asgardeoState.isAuthenticated &&
+      asgardeoUser &&
+      asgardeoUser.sub
+    ) {
+      return asgardeoUser.sub; // Asgardeo user
+    }
+    return null;
+  };
+
   useEffect(() => {
     const recordLastMatchDate = async () => {
       try {
-        const user = auth.currentUser;
-        if (user) {
-          const userUid = user.uid;
-          const userDocRef = doc(database, "users", userUid);
-
-          // Get the current date
-          const currentDate = format(new Date(), "yyyy-MM-dd HH:mm:ss"); // Format: YYYY-MM-DD HH:MM:SS
-
-          // Update the Firestore document
-          await updateDoc(userDocRef, { lastMatchDate: currentDate });
+        const userId = getCurrentUserId();
+        if (userId) {
+          const userDocRef = doc(database, "users", userId);
+          const currentDate = format(new Date(), "yyyy-MM-dd HH:mm:ss");
+          await setDoc(
+            userDocRef,
+            { lastMatchDate: currentDate },
+            { merge: true }
+          );
           console.log("Last match date recorded:", currentDate);
         }
       } catch (error) {
@@ -50,54 +67,47 @@ export const Game = () => {
       }
     };
 
-    recordLastMatchDate(); // Call the function when the component mounts
-  }, []);
+    recordLastMatchDate();
+  }, [asgardeoUser, asgardeoState.isAuthenticated]);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const unsubscribe = auth.onAuthStateChanged(async (user) => {
-          if (user) {
-            const userUid = user.uid; // Get the UID from the logged-in user
-            const userDocRef = doc(database, "users", userUid);
-            const userDoc = await getDoc(userDocRef);
+        const userId = getCurrentUserId();
+        if (userId) {
+          const userDocRef = doc(database, "users", userId);
+          const userDoc = await getDoc(userDocRef);
 
-            if (userDoc.exists()) {
-              const userData = userDoc.data();
-              setUsername(userData.username || "");
-              setPoints(userData.points || 0); // Fetch Unknown Userinitial points
-            } else {
-              console.log("User document does not exist");
-              setUsername("Unknown User");
-              setPoints(0); // Default points if user document is missing
-            }
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUsername(userData.username || "");
+            setPoints(userData.points || 0);
           } else {
-            setUsername("Guest");
-            setPoints(0); // Default points for guests
+            setUsername("Unknown User");
+            setPoints(0);
           }
-        });
-
-        return () => unsubscribe(); // Clean up the listener when the component unmounts
+        } else {
+          setUsername("Guest");
+          setPoints(0);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
         setUsername("Error fetching username");
-        setPoints(0); // Handle error case
+        setPoints(0);
       }
     };
 
-    fetchUserData(); // Call the function
-  }, []);
+    fetchUserData();
+  }, [asgardeoUser, asgardeoState.isAuthenticated]);
 
   const incrementPoints = async () => {
     try {
-      const user = auth.currentUser;
-      if (user) {
-        const userUid = user.uid;
-        const userDocRef = doc(database, "users", userUid);
-
-        const newPoints = points + 10; // Increment points by 10
-        await updateDoc(userDocRef, { points: newPoints }); // Update Firestore
-        setPoints(newPoints); // Update state
+      const userId = getCurrentUserId();
+      if (userId) {
+        const userDocRef = doc(database, "users", userId);
+        const newPoints = points + 10;
+        await updateDoc(userDocRef, { points: newPoints });
+        setPoints(newPoints);
       }
     } catch (error) {
       console.error("Error updating points:", error);
@@ -123,10 +133,9 @@ export const Game = () => {
 
   const updatePointsWithRandomNumber = async (randomPoints) => {
     try {
-      const user = auth.currentUser;
-      if (user) {
-        const userUid = user.uid;
-        const userDocRef = doc(database, "users", userUid);
+      const userId = getCurrentUserId();
+      if (userId) {
+        const userDocRef = doc(database, "users", userId);
 
         const newPoints = points + parseInt(randomPoints, 10); // Add random points
         await updateDoc(userDocRef, { points: newPoints }); // Update Firestore
@@ -249,7 +258,13 @@ export const Game = () => {
         <div className="game">
           <div className="header-game">
             <h1>Banana Rush</h1>
-            <p>{username}</p>
+            <p>
+              {asgardeoUser === undefined
+                ? "Loading..."
+                : asgardeoUser && asgardeoUser.givenName
+                ? asgardeoUser.givenName
+                : username}
+            </p>
           </div>
           <div className="bananaAPI">
             <p className="timer">{formatTime(timeLeft)}</p>

@@ -4,8 +4,13 @@ import diff1 from "../../assets/images/diff1.svg";
 import diff2 from "../../assets/images/diff2.svg";
 import diff3 from "../../assets/images/diff3.svg";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 export const Difficulty = () => {
+  const userDetails = useContext(UserContext);
+  console.log(userDetails);
+
   return (
     <>
       <div className="container">
@@ -37,7 +42,7 @@ export const Difficulty = () => {
           </Link>
           <div className="footer">
             <p>V1.0</p>
-            <p>made by : Sabique</p>
+            <p>made by : {userDetails?.givenName || "failed"} </p>
           </div>
         </div>
       </div>
