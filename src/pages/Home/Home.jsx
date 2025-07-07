@@ -1,5 +1,5 @@
 import "./Home.css";
-import InfoIcon from "../../assets/images/info.svg";
+import InfoIcon from "../../assets/images/Info.svg";
 import bananapixelart from "../../assets/images/banana-pixel-art.svg";
 import audioPlay from "../../assets/images/audio_play.svg";
 import audioPause from "../../assets/images/audio_pause.svg";
